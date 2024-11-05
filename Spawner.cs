@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,10 +9,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float _spawnDelay = 2f;
 
     private MeshRenderer _meshRenderer;
+    private Vector3 _highestSurfaceCenter;
 
     private void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
+        _highestSurfaceCenter = GetHighestSurfaceCenter(_meshRenderer);
     }
 
     private void Start()
@@ -31,10 +32,10 @@ public class Spawner : MonoBehaviour
         {
             Enemy enemy = Instantiate(_enemy);
             
-            Vector3 spawnPosition = GetHighestSurfaceCenter(_meshRenderer) + new Vector3(0, enemy.transform.localScale.y / spawnHeightCoefficient, 0);
+            Vector3 spawnPosition = _highestSurfaceCenter + new Vector3(0, enemy.transform.localScale.y / spawnHeightCoefficient, 0);
             enemy.transform.position = spawnPosition;
             
-            enemy.StartMovingTo(_target.gameObject);
+            enemy.StartMovingTo(_target.transform);
 
             yield return spawnDelay;
         }

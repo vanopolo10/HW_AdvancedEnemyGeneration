@@ -10,17 +10,17 @@ public class Enemy : MonoBehaviour
         StopAllCoroutines();
     }
     
-    public void StartMovingTo(GameObject gameObject)
+    public void StartMovingTo(Transform targetTransform)
     {
         StopAllCoroutines();
-        StartCoroutine(MoveTo(gameObject));
+        StartCoroutine(MoveTo(targetTransform));
     }
 
-    private IEnumerator MoveTo(GameObject gameObject)
+    private IEnumerator MoveTo(Transform targetTransform)
     {
         while (true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, _speed * Time.deltaTime);
             yield return null;
         }
     }

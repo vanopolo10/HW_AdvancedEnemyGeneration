@@ -1,27 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Target : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
-    [SerializeField] private Vector3 _position1;
-    [SerializeField] private Vector3 _position2;
+    [SerializeField] private List<Vector3> _positions;
 
-    private Vector3 _positionToGo;
+    private int _nextPositionIndex;
     private float _epsilon;
 
     private void Awake()
     {
-        _positionToGo = _position2;
-        _epsilon = 0.1f;
+        _nextPositionIndex = 1;
+        _epsilon = 0.01f;
     }
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, _position2) < _epsilon)
-            _positionToGo = _position1;
-        else if (Vector3.Distance(transform.position, _position1) < _epsilon)
-            _positionToGo = _position2;
-
-        transform.position = Vector3.MoveTowards(transform.position, _positionToGo, _speed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, _positions[_nextPositionIndex]) < _epsilon)
+        {
+            if (_positions.IndexOf(_positions[_nextPositionIndex]) != _positions.Count - 1)
+                _nextPositionIndex++;
+            else
+                _nextPositionIndex = 0;
+        }
+        
+        transform.position = Vector3.MoveTowards(transform.position, _positions[_nextPositionIndex], _speed * Time.deltaTime);
     }
 }
