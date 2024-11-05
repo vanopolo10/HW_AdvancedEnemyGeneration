@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,17 +10,17 @@ public class Enemy : MonoBehaviour
         StopAllCoroutines();
     }
     
-    public void StartMoving(Vector3 direction)
+    public void StartMovingTo(GameObject gameObject)
     {
         StopAllCoroutines();
-        StartCoroutine(MoveTo(direction));
+        StartCoroutine(MoveTo(gameObject));
     }
 
-    private IEnumerator MoveTo(Vector3 direction)
+    private IEnumerator MoveTo(GameObject gameObject)
     {
         while (true)
         {
-            transform.position += direction * (Time.deltaTime * _speed);
+            transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, _speed * Time.deltaTime);
             yield return null;
         }
     }
