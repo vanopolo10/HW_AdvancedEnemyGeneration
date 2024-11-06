@@ -4,6 +4,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
+
+    private Coroutine _moveCoroutine;
     
     private void OnDisable()
     {
@@ -12,8 +14,10 @@ public class Enemy : MonoBehaviour
     
     public void StartMovingTo(Transform targetTransform)
     {
-        StopAllCoroutines();
-        StartCoroutine(MoveTo(targetTransform));
+        if (_moveCoroutine != null)
+            StopCoroutine(_moveCoroutine);
+        
+        _moveCoroutine = StartCoroutine(MoveTo(targetTransform));
     }
 
     private IEnumerator MoveTo(Transform targetTransform)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Extensions;
 
 public class Target : MonoBehaviour
 {
@@ -17,14 +18,14 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, _positions[_nextPositionIndex]) < _epsilon)
+        if (transform.position.IsCloseEnough(_positions[_nextPositionIndex], _epsilon))
         {
-            if (_positions.IndexOf(_positions[_nextPositionIndex]) != _positions.Count - 1)
+            if (_nextPositionIndex != _positions.Count - 1)
                 _nextPositionIndex++;
             else
                 _nextPositionIndex = 0;
         }
-        
+
         transform.position = Vector3.MoveTowards(transform.position, _positions[_nextPositionIndex], _speed * Time.deltaTime);
     }
 }
